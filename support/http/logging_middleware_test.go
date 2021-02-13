@@ -1,6 +1,7 @@
 package http
 
 import (
+	"net/http"
 	stdhttp "net/http"
 	"testing"
 
@@ -11,6 +12,12 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+func setXFFMiddleWare(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		r.Header.Set("X-Forwarded-For", "4.1.1")
+		next.ServeHTTP(w, r)
+	})
+}
 func TestHTTPMiddleware(t *testing.T) {
 	done := log.DefaultLogger.StartTest(log.InfoLevel)
 	mux := chi.NewMux()
