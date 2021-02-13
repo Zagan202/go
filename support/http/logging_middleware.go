@@ -50,12 +50,13 @@ func logStartOfRequest(
 	r *stdhttp.Request,
 ) {
 	l := log.Ctx(r.Context()).WithFields(log.F{
-		"subsys":    "http",
-		"path":      r.URL.String(),
-		"method":    r.Method,
-		"ip":        r.RemoteAddr,
-		"host":      r.Host,
-		"useragent": r.Header.Get("User-Agent"),
+		"subsys":          "http",
+		"path":            r.URL.String(),
+		"method":          r.Method,
+		"ip":              r.RemoteAddr,
+		"host":            r.Host,
+		"useragent":       r.Header.Get("User-Agent"),
+		"X-Forwarded-For": r.Header.Get("X-Forwarded-For"),
 	})
 	l.Info("starting request")
 }
